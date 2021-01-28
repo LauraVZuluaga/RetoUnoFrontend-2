@@ -16,12 +16,13 @@ export default {
         }
     },
     created () {
-        this.infectedCities;
+        this.infectedCities();
     },
     methods: {
         infectedCities() {
         let json = {};
-        array = array.map((element) => {
+    
+        let array = this.$store.state.data.map((element) => {
         if (!json[element["ciudad_municipio_nom"]]) {
             json[element["ciudad_municipio_nom"]] = {
             name: element["ciudad_municipio_nom"],
@@ -34,12 +35,14 @@ export default {
         return json[element["ciudad_municipio_nom"]];
         });
 
-        const dataArr = new Set(array);
-        result = [...dataArr];
+        const result = [...new Set(array)];
+        // result = [...dataArr];
         result.sort((a, b) => {
         return b["value"] - a["value"];
         });
-        this.$set(this.$store.state.chartInfo3, this.result.name[0], this.result.value[0]); 
+        for (let index = 0; index < (result.length); index++) {
+            this.$set(this.$store.state.chartInfo3, result[index].name, result[index].value);
+      }
         },
     }
 }
